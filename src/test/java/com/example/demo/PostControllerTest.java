@@ -11,8 +11,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
+import static java.lang.reflect.Array.get;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -45,4 +48,24 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.message").value("Test Message"))
                 .andExpect(jsonPath("$.id").value(1));
     }
+
+    @Test
+    void testGetPostById() throws Exception {
+        Post post = new Post(99, "Get Me", LocalDateTime.now());
+        when(postRepository.findById(99)).thenReturn(Optional.of(post));
+
+//        mockMvc.perform(get("/post/99"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.id").value(99))
+//                .andExpect(jsonPath("$.message").value("Get Me"));
+    }
+
+    @Test
+    void testDeletePost() throws Exception {
+        when(postRepository.deleteById(42)).thenReturn(true);
+
+        mockMvc.perform(delete("/post/42"))
+                .andExpect(status().isNoContent());
+    }
+
 }
