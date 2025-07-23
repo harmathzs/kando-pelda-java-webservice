@@ -31,6 +31,7 @@ public class Post {
         this.createdDate = createdDate;
     }
 
+    public Post() {}
 
     public Post(Integer id, String message, LocalDateTime createdDate) {
         setId(id);
